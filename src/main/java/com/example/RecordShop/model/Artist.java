@@ -17,21 +17,20 @@ public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(updatable = false, name = "artist_id")
+    Long artist_id;
 
-    @Column(updatable = false, nullable = false)
-    Long id;
-
-    @Column
+    @Column(name = "name")
     private String name;
 
-    @Column
+    @Column(name = "age")
     int age;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @Column
+    @Column(name = "dateOfBirth")
     private Date dateOfBirth;
 
-    @Column
+    @Column(name = "dateOfBirth")
     private String placeOfBirth;
 
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
