@@ -15,25 +15,26 @@ public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(updatable = false, nullable = false)
-    Long id;
+    @Column(updatable = false, nullable = false, name = "album_id")
+    Long album_id;
 
-    @Column
+    @Column(name = "title")
     private String title;
 
-    @Column
+    @Column(name = "stock")
     int stock;
 
-    @Column
+    @Column(name = "sales")
     int sales;
 
-    @Column
+    @Column(name = "releaseDate")
     private Instant releaseDate;
 
-    @Column
-    Genre genre;
+    @OneToOne(mappedBy = "genre", fetch = FetchType.LAZY)
+    @Column(name = "genre_id")
+    private Genre genre;
 
-    @ManyToOne
-    @JoinColumn(name = "artistId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artist_id")
     private Artist artist;
 }
