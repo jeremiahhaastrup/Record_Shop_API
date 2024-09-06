@@ -22,8 +22,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -87,14 +91,32 @@ class AlbumControllerTest {
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("29/10/1987").build();
         Album expected = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean);
 
-        System.out.println(expected);
-        System.out.println("Serialized JSON: " + mapper.writeValueAsString(expected));
-
-        when(mockAlbumServiceImpl.addAlbum(expected)).thenReturn(expected);
+        when(mockAlbumServiceImpl.getAlbumById(expected.getAlbum_id())).thenReturn(expected);
 
         this.mockMvcController.perform(MockMvcRequestBuilders.post("http://localhost:8080/api/v1/albums")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(expected)))
                         .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("GET /albums/{id}")
+    void getAlbumById() throws Exception {
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+
+        Album album = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
+
+        when(mockAlbumServiceImpl.getAlbumById(album.getAlbum_id())).thenReturn(album);
+
+        this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/1"))
+                        .andExpect(status().isOk())
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.album_id").value(1))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Soca Gold 2018"))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.stock").value(200))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.sales").value(2500))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.releaseDate").value("15/08/2022"))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value(Genre.AFROBEATS.toString()))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.artist").value(frankOcean)).andDo(print());
     }
 }
