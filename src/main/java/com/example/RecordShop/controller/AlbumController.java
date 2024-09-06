@@ -20,9 +20,16 @@ public class AlbumController {
         return new ResponseEntity<>(albumService.getAllAlbums(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Album> getAlbumById(@PathVariable Long id) {
+        Album album = albumService.getAlbumById(id);
+        return new ResponseEntity<>(album, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Album> addAlbum(@RequestBody Album album) {
         Album addAlbum = albumService.addAlbum(album);
         return new ResponseEntity<>(addAlbum, HttpStatus.CREATED);
     }
+
 }
