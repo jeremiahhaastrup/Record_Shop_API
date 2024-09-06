@@ -1,5 +1,6 @@
 package com.example.RecordShop.service;
 
+import com.example.RecordShop.exception.NoSuchAlbumException;
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.model.Genre;
@@ -16,6 +17,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -66,5 +69,26 @@ class AlbumServiceImplTest {
 
         assertEquals(expected1, actual1);
         assertEquals(expected2, actual2);
+    }
+
+    @Test
+    @DisplayName("GET /albums/{id}")
+    void getAlbumById() {
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+
+        Album expected1 = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
+
+        when(mockAlbumRepository.findById(expected1.getAlbum_id())).thenReturn(Optional.of(expected1));
+
+        Album actual1 = albumServiceImpl.getAlbumById(expected1.getAlbum_id());
+
+        assertEquals(actual1, expected1);
+    }
+
+    @Test
+    @DisplayName("GET /album/{id} gives an Exception")
+    void getAlbumByIdReturnsAnException() {
+        assertThrows(NoSuchElementException.class, () -> albumServiceImpl.getAlbumById(2L));
     }
 }
