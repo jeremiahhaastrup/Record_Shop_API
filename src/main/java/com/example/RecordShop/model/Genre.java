@@ -2,7 +2,6 @@ package com.example.RecordShop.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -23,7 +22,8 @@ public enum Genre {
     @Column(updatable = false, nullable = false)
     Long genre_id;
 
-    @OneToOne(mappedBy = "album", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn(name = "album_id")
     Album album;
 
     @Column(name = "name")

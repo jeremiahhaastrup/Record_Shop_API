@@ -1,11 +1,13 @@
 package com.example.RecordShop.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -28,10 +30,12 @@ public class Album {
     int sales;
 
     @Column(name = "releaseDate")
-    private Instant releaseDate;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate releaseDate;
 
-    @OneToOne(mappedBy = "genre", fetch = FetchType.LAZY)
-    @Column(name = "genre_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn(name = "genre_id")
     private Genre genre;
 
     @ManyToOne(fetch = FetchType.LAZY)

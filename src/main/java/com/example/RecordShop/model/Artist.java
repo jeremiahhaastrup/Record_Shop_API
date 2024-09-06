@@ -2,17 +2,19 @@ package com.example.RecordShop.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Artist {
 
     @Id
@@ -23,17 +25,14 @@ public class Artist {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "age")
-    int age;
-
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "dateOfBirth")
-    private Date dateOfBirth;
+    private String dateOfBirth;
 
-    @Column(name = "dateOfBirth")
+    @Column(name = "placeOfBirth")
     private String placeOfBirth;
 
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
-    private Set<Album> albumList;
+    private List<Album> albumList;
 
 }
