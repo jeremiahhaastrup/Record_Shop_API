@@ -20,4 +20,9 @@ public class AlbumServiceImpl implements AlbumService {
         albumRepository.findAll().forEach(albums::add);
         return albums;
     }
+
+    @Override
+    public Album addAlbum(Album album) {
+        return albumRepository.save(album);
+    }
 }
