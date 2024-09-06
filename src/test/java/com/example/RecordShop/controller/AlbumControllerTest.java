@@ -3,7 +3,6 @@ package com.example.RecordShop.controller;
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.model.Genre;
-import com.example.RecordShop.service.AlbumService;
 import com.example.RecordShop.service.AlbumServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,22 +10,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -34,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AlbumControllerTest {
 
     @Mock
-    private AlbumServiceImpl mockAlbumService;
+    private AlbumServiceImpl mockAlbumServiceImpl;
 
     @InjectMocks
     private AlbumController albumController;
@@ -48,21 +45,22 @@ class AlbumControllerTest {
     public void setup(){
         mockMvcController = MockMvcBuilders.standaloneSetup(albumController).build();
         mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
     }
 
     @Test
     @DisplayName("GET /albums")
     void getAllAlbums() throws Exception {
 
-        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("1987-10-28").build();
-        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("1987-06-17").build();
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/07/1987").build();
 
         List<Album> expected = List.of(
                 new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean),
                 new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(1998, 7, 19), Genre.HIPHOP, kendrickLamar)
         );
 
-        when(mockAlbumService.getAllAlbums()).thenReturn(expected);
+        when(mockAlbumServiceImpl.getAllAlbums()).thenReturn(expected);
 
         this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums"))
                 .andExpect(status().isOk())
@@ -80,5 +78,23 @@ class AlbumControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseDate").value("19/07/1998"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].genre").value(Genre.HIPHOP.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value(kendrickLamar));
+    }
+
+    @Test
+    @DisplayName("POST /albums")
+    void postAlbum() throws Exception {
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("29/10/1987").build();
+        Album expected = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean);
+
+        System.out.println(expected);
+        System.out.println("Serialized JSON: " + mapper.writeValueAsString(expected));
+
+        when(mockAlbumServiceImpl.addAlbum(expected)).thenReturn(expected);
+
+        this.mockMvcController.perform(MockMvcRequestBuilders.post("http://localhost:8080/api/v1/albums")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(expected)))
+                        .andExpect(status().isCreated());
     }
 }
