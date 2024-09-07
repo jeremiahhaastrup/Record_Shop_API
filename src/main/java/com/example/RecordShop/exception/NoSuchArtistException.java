@@ -1,12 +1,12 @@
 package com.example.RecordShop.exception;
 
-public class NoSuchAlbumException extends RuntimeException {
+public class NoSuchArtistException extends RuntimeException {
     private String message;
 
-    public NoSuchAlbumException() {
+    public NoSuchArtistException() {
     }
 
-    public NoSuchAlbumException(String msg) {
+    public NoSuchArtistException(String msg) {
         super(msg);
         this.message = msg;
     }

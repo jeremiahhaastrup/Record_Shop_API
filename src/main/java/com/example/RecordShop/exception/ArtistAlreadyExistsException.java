@@ -1,11 +1,11 @@
 package com.example.RecordShop.exception;
 
-public class AlbumAlreadyExistsException extends RuntimeException {
+public class ArtistAlreadyExistsException extends RuntimeException {
     private String message;
 
-    public AlbumAlreadyExistsException() {}
+    public ArtistAlreadyExistsException() {}
 
-    public AlbumAlreadyExistsException(String msg) {
+    public ArtistAlreadyExistsException(String msg) {
         super(msg);
         this.message = msg;
     }

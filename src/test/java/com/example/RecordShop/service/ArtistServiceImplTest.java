@@ -43,7 +43,7 @@ class ArtistServiceImplTest {
     }
 
     @Test
-    @DisplayName("POST /albums")
+    @DisplayName("POST /artists")
     void postAlbum() {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();

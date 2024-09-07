@@ -22,6 +22,20 @@ public class GlobalExceptionHandler {
                 .body(exception.getMessage());
     }
 
+    @ExceptionHandler({ArtistAlreadyExistsException.class})
+    public ResponseEntity<Object> handleAlbumAlreadyExistsException(ArtistAlreadyExistsException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler({NoSuchArtistException.class})
+    public ResponseEntity<Object> handleAlbumNotFoundException(NoSuchArtistException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exception.getMessage());
+    }
+
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<Object> handleRuntimeException(RuntimeException exception) {
         return ResponseEntity
