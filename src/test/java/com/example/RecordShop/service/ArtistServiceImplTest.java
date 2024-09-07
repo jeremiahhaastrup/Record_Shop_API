@@ -1,5 +1,6 @@
 package com.example.RecordShop.service;
 
+import com.example.RecordShop.exception.NoSuchArtistException;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.repository.ArtistRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -58,4 +60,19 @@ class ArtistServiceImplTest {
         assertEquals(frankOcean, actual1);
         assertEquals(kendrickLamar, actual2);
     }
+
+
+    @Test
+    @DisplayName("GET /artists/{id}")
+    void getArtistById() {
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+
+        when(mockArtistRepository.findById(frankOcean.getArtist_id())).thenReturn(Optional.of(frankOcean));
+
+        Artist actual = artistServiceImpl.getArtistById(frankOcean.getArtist_id());
+
+        assertEquals(actual, frankOcean);
+    }
+
 }
