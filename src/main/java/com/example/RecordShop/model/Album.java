@@ -1,5 +1,6 @@
 package com.example.RecordShop.model;
 
+import com.example.RecordShop.type.Genre;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,11 +35,11 @@ public class Album {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate releaseDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn(name = "genre_id")
+    @Column(name = "genre_id")
+    @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "artist_id")
+    @ManyToOne()
+    @JoinColumn(name = "artist_id", nullable = true)
     private Artist artist;
 }
