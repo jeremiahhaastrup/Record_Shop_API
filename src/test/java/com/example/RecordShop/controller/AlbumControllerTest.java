@@ -2,7 +2,7 @@ package com.example.RecordShop.controller;
 
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
-import com.example.RecordShop.model.Genre;
+import com.example.RecordShop.type.Genre;
 import com.example.RecordShop.service.AlbumServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,10 +22,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

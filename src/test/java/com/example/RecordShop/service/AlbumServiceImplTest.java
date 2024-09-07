@@ -3,21 +3,17 @@ package com.example.RecordShop.service;
 import com.example.RecordShop.exception.NoSuchAlbumException;
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
-import com.example.RecordShop.model.Genre;
+import com.example.RecordShop.type.Genre;
 import com.example.RecordShop.repository.AlbumRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -89,6 +85,6 @@ class AlbumServiceImplTest {
     @Test
     @DisplayName("GET /album/{id} gives an Exception")
     void getAlbumByIdReturnsAnException() {
-        assertThrows(NoSuchElementException.class, () -> albumServiceImpl.getAlbumById(2L));
+        assertThrows(NoSuchAlbumException.class, () -> albumServiceImpl.getAlbumById(2L));
     }
 }
