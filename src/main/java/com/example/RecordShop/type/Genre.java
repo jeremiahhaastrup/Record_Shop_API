@@ -1,4 +1,4 @@
-package com.example.RecordShop.model;
+package com.example.RecordShop.type;
 
 public enum Genre {
     AFROBEATS,
