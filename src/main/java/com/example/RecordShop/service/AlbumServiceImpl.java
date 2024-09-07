@@ -28,7 +28,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public Album getAlbumById(Long id) {
         return albumRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException(STR."Album ID \{id} does not exist!👎🏽")
+                () -> new NoSuchAlbumException(STR."Album ID \{id} does not exist!👎🏽")
         );
     }
 

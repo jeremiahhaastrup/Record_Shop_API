@@ -8,4 +8,5 @@ import java.util.List;
 public interface ArtistService {
     List<Artist> getAllArtists();
     Artist addArtist(Artist artist);
+    Artist getArtistById(Long id);
 }
