@@ -2,6 +2,8 @@ package com.example.RecordShop.service;
 
 import com.example.RecordShop.exception.AlbumAlreadyExistsException;
 import com.example.RecordShop.exception.ArtistAlreadyExistsException;
+import com.example.RecordShop.exception.NoSuchAlbumException;
+import com.example.RecordShop.exception.NoSuchArtistException;
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.repository.ArtistRepository;
@@ -33,4 +35,10 @@ public class ArtistServiceImpl implements ArtistService {
         } else throw new ArtistAlreadyExistsException(STR."\{artist.getName()} already exists!🧐");
     }
 
+    @Override
+    public Artist getArtistById(Long id) {
+        return artistRepository.findById(id).orElseThrow(
+                () -> new NoSuchArtistException(STR."Artist ID \{id} does not exist!👎🏽")
+        );
+    }
 }
