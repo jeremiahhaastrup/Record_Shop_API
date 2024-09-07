@@ -1,5 +1,7 @@
 package com.example.RecordShop.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,14 +27,12 @@ public class Artist {
     @Column(name = "name")
     private String name;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "dateOfBirth")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private String dateOfBirth;
 
     @Column(name = "placeOfBirth")
     private String placeOfBirth;
-
-    @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
-    private List<Album> albumList;
 
 }
