@@ -75,4 +75,9 @@ class ArtistServiceImplTest {
         assertEquals(actual, frankOcean);
     }
 
+    @Test
+    @DisplayName("GET /artists/{id} gives an Exception")
+    void getArtistByIdReturnsAnException() {
+        assertThrows(NoSuchArtistException.class, () -> artistServiceImpl.getArtistById(2L));
+    }
 }
