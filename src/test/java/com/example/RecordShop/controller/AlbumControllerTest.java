@@ -22,7 +22,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -115,5 +118,24 @@ class AlbumControllerTest {
                         .andExpect(MockMvcResultMatchers.jsonPath("$.releaseDate").value("15/08/2022"))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value(Genre.AFROBEATS.toString()))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.artist").value(frankOcean)).andDo(print());
+    }
+
+    @Test
+    @DisplayName("PUT /albums")
+    void putAlbum() throws Exception {
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
+
+        Album currentAlbum = new Album(1L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar);
+        Album newAlbum = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
+
+        when(mockAlbumServiceImpl.getAlbumById(currentAlbum.getAlbum_id())).thenReturn(currentAlbum);
+        when(mockAlbumServiceImpl.updateAlbum(currentAlbum, 1L)).thenReturn(newAlbum);
+
+        this.mockMvcController.perform(MockMvcRequestBuilders.put("http://localhost:8080/api/v1/albums/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(newAlbum)))
+                        .andExpect(status().isCreated());
     }
 }
