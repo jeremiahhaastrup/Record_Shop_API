@@ -11,13 +11,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class AlbumServiceImplTest {
@@ -30,7 +33,7 @@ class AlbumServiceImplTest {
 
     @Test
     @DisplayName("GET /albums")
-    void getAllAlbums() {
+    void testGetAllAlbums() {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
@@ -49,7 +52,7 @@ class AlbumServiceImplTest {
 
     @Test
     @DisplayName("POST /albums")
-    void postAlbum() {
+    void testPostAlbum() {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
@@ -69,7 +72,7 @@ class AlbumServiceImplTest {
 
     @Test
     @DisplayName("GET /albums/{id}")
-    void getAlbumById() {
+    void testGetAlbumById() {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
 
@@ -84,13 +87,13 @@ class AlbumServiceImplTest {
 
     @Test
     @DisplayName("GET /album/{id} gives NoSuchAlbumException")
-    void getAlbumByIdReturnsAnException() {
+    void testGetAlbumByIdReturnsAnException() {
         assertThrows(NoSuchAlbumException.class, () -> albumServiceImpl.getAlbumById(2L));
     }
 
     @Test
     @DisplayName("PUT /albums")
-    void putAlbum() {
+    void testPutAlbum() {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
@@ -111,7 +114,7 @@ class AlbumServiceImplTest {
 
     @Test
     @DisplayName("PUT /albums gives NoSuchAlbumException")
-    void putAlbumReturnsAnException() {
+    void testPutAlbumReturnsAnException() {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
@@ -123,6 +126,15 @@ class AlbumServiceImplTest {
                 () -> assertThrows(NoSuchAlbumException.class, () -> albumServiceImpl.updateAlbum(expected1, 1L)),
                 () -> assertThrows(NoSuchAlbumException.class, () -> albumServiceImpl.updateAlbum(expected2, 2L))
         );
+    }
+
+    @Test
+    @DisplayName("DELETE /album")
+    void testDeleteAlbum() {
+
+        Long id = 1L;
+        albumServiceImpl.deleteAlbum(id);
+        verify(mockAlbumRepository, times(1)).deleteById(id);
     }
 
 }
