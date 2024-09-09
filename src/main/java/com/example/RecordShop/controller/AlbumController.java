@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/albums")
@@ -30,6 +31,11 @@ public class AlbumController {
     public ResponseEntity<Album> addAlbum(@RequestBody Album album) {
         Album addAlbum = albumService.addAlbum(album);
         return new ResponseEntity<>(addAlbum, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Album> updateAlbum(@RequestBody Album newAlbum, @PathVariable Long id) {
+        return new ResponseEntity<>(albumService.updateAlbum(newAlbum, id), HttpStatus.CREATED);
     }
 
 }
