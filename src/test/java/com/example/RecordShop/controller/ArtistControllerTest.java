@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -51,7 +52,7 @@ class ArtistControllerTest {
 
     @Test
     @DisplayName("GET /artists")
-    void getAllArtists() throws Exception {
+    void testGetAllArtists() throws Exception {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
         Artist kendrickLamar = Artist.builder().artist_id(2L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/07/1987").build();
@@ -77,7 +78,7 @@ class ArtistControllerTest {
 
     @Test
     @DisplayName("POST /artists")
-    void postArtist() throws Exception {
+    void testPostArtist() throws Exception {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("29/10/1987").build();
 
@@ -92,7 +93,7 @@ class ArtistControllerTest {
 
     @Test
     @DisplayName("GET /artists/{id}")
-    void getArtistById() throws Exception {
+    void testGetArtistById() throws Exception {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
 
@@ -109,7 +110,7 @@ class ArtistControllerTest {
 
     @Test
     @DisplayName("PUT /artists")
-    void putArtist() throws Exception {
+    void testPutArtist() throws Exception {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
@@ -121,5 +122,15 @@ class ArtistControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(kendrickLamar)))
                         .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("DELETE /artist")
+    void testDeleteArtist() throws Exception{
+        Long id = 1L;
+        ResultActions result = mockMvcController.perform(
+                MockMvcRequestBuilders.delete("http://localhost:8080/api/v1/artists/{id}", id)
+        );
+        result.andExpect(status().isNoContent());
     }
 }
