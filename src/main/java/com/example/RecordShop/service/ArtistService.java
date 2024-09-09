@@ -10,4 +10,5 @@ public interface ArtistService {
     Artist addArtist(Artist artist);
     Artist getArtistById(Long id);
     Artist updateArtist(Artist artist, Long id);
+    void deleteArtist(Long id);
 }

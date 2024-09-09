@@ -54,4 +54,9 @@ public class ArtistServiceImpl implements ArtistService {
             throw new NoSuchAlbumException(String.format("Album ID '%s' does not exist!👎🏽", id));
         }
     }
+
+    @Override
+    public void deleteArtist(Long id) {
+        artistRepository.deleteById(id);
+    }
 }
