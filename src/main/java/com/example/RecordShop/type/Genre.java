@@ -3,10 +3,10 @@ package com.example.RecordShop.type;
 public enum Genre {
     AFROBEATS,
     SOCA,
-    RAND,
+    RANDB,
     HIPHOP,
     JAZZ,
     SALSA,
     BLUES,
-    LATINALTERNATIVE;
+    LATIN_ALTERNATIVE;
 }
