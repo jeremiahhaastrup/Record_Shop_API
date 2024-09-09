@@ -1,6 +1,6 @@
 package com.example.RecordShop.controller;
 
-import com.example.RecordShop.model.Album;
+import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class ArtistController {
     ArtistService artistService;
 
     @GetMapping
-    public ResponseEntity<List<Artist>> getAllAlbums() {
+    public ResponseEntity<List<Artist>> getAllArtists() {
         return new ResponseEntity<>(artistService.getAllArtists(), HttpStatus.OK);
     }
 
@@ -32,5 +32,10 @@ public class ArtistController {
     public ResponseEntity<Artist> getArtistById(@PathVariable Long id) {
         Artist artist = artistService.getArtistById(id);
         return new ResponseEntity<>(artist, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Artist> updateArtist(@RequestBody Artist newArtist, @PathVariable Long id) {
+        return new ResponseEntity<>(artistService.updateArtist(newArtist, id), HttpStatus.CREATED);
     }
 }
