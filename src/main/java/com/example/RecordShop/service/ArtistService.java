@@ -9,4 +9,5 @@ public interface ArtistService {
     List<Artist> getAllArtists();
     Artist addArtist(Artist artist);
     Artist getArtistById(Long id);
+    Artist updateArtist(Artist artist, Long id);
 }
