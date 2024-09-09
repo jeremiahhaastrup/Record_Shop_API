@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -54,7 +55,7 @@ class AlbumControllerTest {
 
     @Test
     @DisplayName("GET /albums")
-    void getAllAlbums() throws Exception {
+    void testGetAllAlbums() throws Exception {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/07/1987").build();
@@ -86,7 +87,7 @@ class AlbumControllerTest {
 
     @Test
     @DisplayName("POST /albums")
-    void postAlbum() throws Exception {
+    void testPostAlbum() throws Exception {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("29/10/1987").build();
         Album expected = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean);
@@ -101,7 +102,7 @@ class AlbumControllerTest {
 
     @Test
     @DisplayName("GET /albums/{id}")
-    void getAlbumById() throws Exception {
+    void testGetAlbumById() throws Exception {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
 
@@ -122,7 +123,7 @@ class AlbumControllerTest {
 
     @Test
     @DisplayName("PUT /albums")
-    void putAlbum() throws Exception {
+    void testPutAlbum() throws Exception {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
@@ -137,5 +138,15 @@ class AlbumControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(newAlbum)))
                         .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("DELETE /album")
+    void testDeleteAlbum() throws Exception {
+        Long id = 1L;
+        ResultActions result = mockMvcController.perform(
+                MockMvcRequestBuilders.delete("http://localhost:8080/api/v1/albums/{id}", id)
+        );
+        result.andExpect(status().isNoContent());
     }
 }
