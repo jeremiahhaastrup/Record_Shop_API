@@ -83,8 +83,46 @@ class AlbumServiceImplTest {
     }
 
     @Test
-    @DisplayName("GET /album/{id} gives an Exception")
+    @DisplayName("GET /album/{id} gives NoSuchAlbumException")
     void getAlbumByIdReturnsAnException() {
         assertThrows(NoSuchAlbumException.class, () -> albumServiceImpl.getAlbumById(2L));
     }
+
+    @Test
+    @DisplayName("PUT /albums")
+    void putAlbum() {
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
+
+        Album currentAlbum = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
+        Album newAlbum = new Album(1L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar);
+
+        when(mockAlbumRepository.findById(currentAlbum.getAlbum_id())).thenReturn(Optional.of(currentAlbum));
+        when(mockAlbumRepository.save(currentAlbum)).thenReturn(newAlbum);
+        Album expected = albumServiceImpl.updateAlbum(newAlbum, 1L);
+
+        assertAll(
+                () -> assertEquals(currentAlbum.getAlbum_id(), expected.getAlbum_id()),
+                () -> assertEquals(currentAlbum.getTitle(), expected.getTitle()),
+                () -> assertEquals(currentAlbum.getGenre(), expected.getGenre())
+        );
+    }
+
+    @Test
+    @DisplayName("PUT /albums gives NoSuchAlbumException")
+    void putAlbumReturnsAnException() {
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
+
+        Album expected1 = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
+        Album expected2 = new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar);
+
+        assertAll(
+                () -> assertThrows(NoSuchAlbumException.class, () -> albumServiceImpl.updateAlbum(expected1, 1L)),
+                () -> assertThrows(NoSuchAlbumException.class, () -> albumServiceImpl.updateAlbum(expected2, 2L))
+        );
+    }
+
 }
