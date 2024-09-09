@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ArtistServiceImplTest {
@@ -102,5 +102,14 @@ class ArtistServiceImplTest {
                 () -> assertEquals(expected.getDateOfBirth(), kendrickLamar.getDateOfBirth()),
                 () -> assertEquals(expected.getPlaceOfBirth(), kendrickLamar.getPlaceOfBirth())
         );
+    }
+
+    @Test
+    @DisplayName("DELETE /artist")
+    void testDeleteArtist() {
+
+        Long id = 1L;
+        artistServiceImpl.deleteArtist(id);
+        verify(mockArtistRepository, times(1)).deleteById(id);
     }
 }
