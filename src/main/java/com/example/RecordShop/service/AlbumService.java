@@ -9,4 +9,5 @@ public interface AlbumService {
     Album addAlbum(Album album);
     Album getAlbumById(Long id);
     Album updateAlbum(Album album, Long id);
+    void deleteAlbum(Long id);
 }
