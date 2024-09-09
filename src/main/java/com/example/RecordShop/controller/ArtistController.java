@@ -1,5 +1,6 @@
 package com.example.RecordShop.controller;
 
+import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.service.ArtistService;
@@ -37,5 +38,11 @@ public class ArtistController {
     @PutMapping("/{id}")
     public ResponseEntity<Artist> updateArtist(@RequestBody Artist newArtist, @PathVariable Long id) {
         return new ResponseEntity<>(artistService.updateArtist(newArtist, id), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Album> deleteArtist(@PathVariable Long id){
+        artistService.deleteArtist(id);
+        return ResponseEntity.noContent().build();
     }
 }
