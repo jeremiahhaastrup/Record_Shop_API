@@ -1,7 +1,9 @@
 package com.example.RecordShop.controller;
 
+import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.service.ArtistServiceImpl;
+import com.example.RecordShop.type.Genre;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -102,5 +105,21 @@ class ArtistControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Frank Ocean"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.placeOfBirth").value("Long Beach, California, USA"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.dateOfBirth").value("28/10/1987")).andDo(print());
+    }
+
+    @Test
+    @DisplayName("PUT /artists")
+    void putArtist() throws Exception {
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
+
+        when(mockArtistServiceImpl.getArtistById(frankOcean.getArtist_id())).thenReturn(frankOcean);
+        when(mockArtistServiceImpl.updateArtist(frankOcean, 1L)).thenReturn(kendrickLamar);
+
+        this.mockMvcController.perform(MockMvcRequestBuilders.put("http://localhost:8080/api/v1/artists/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(kendrickLamar)))
+                        .andExpect(status().isCreated());
     }
 }
