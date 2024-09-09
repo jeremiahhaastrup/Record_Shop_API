@@ -128,6 +128,7 @@ class ArtistControllerTest {
     @DisplayName("DELETE /artist")
     void testDeleteArtist() throws Exception{
         Long id = 1L;
+
         ResultActions result = mockMvcController.perform(
                 MockMvcRequestBuilders.delete("http://localhost:8080/api/v1/artists/{id}", id)
         );
