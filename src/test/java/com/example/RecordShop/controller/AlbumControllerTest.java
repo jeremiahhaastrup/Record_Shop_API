@@ -114,6 +114,38 @@ class AlbumControllerTest {
     }
 
     @Test
+    @DisplayName("GET /albums/artist/{name}")
+    void testGetAllAlbumsByArtist() throws Exception {
+
+        String name = "Frank Ocean";
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+
+        List<Album> expected = List.of(
+                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean),
+                new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(1998, 7, 19), Genre.HIPHOP, frankOcean)
+        );
+
+        when(mockAlbumServiceImpl.findByArtistName(name)).thenReturn(expected);
+
+        this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/artist/{name}", name))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].album_id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Soca Gold 2018"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].sales").value(2500))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseDate").value("19/07/1998"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].genre").value(Genre.AFROBEATS.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].artist").value(frankOcean))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].album_id").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title").value("To Pimp a Butterfly"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].stock").value(150))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].sales").value(2300))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseDate").value("19/07/1998"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].genre").value(Genre.HIPHOP.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value(frankOcean));
+    }
+
+    @Test
     @DisplayName("POST /albums")
     void testPostAlbum() throws Exception {
 
