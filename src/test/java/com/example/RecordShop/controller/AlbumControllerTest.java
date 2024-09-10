@@ -23,10 +23,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,6 +64,38 @@ class AlbumControllerTest {
         when(mockAlbumServiceImpl.getAllAlbums()).thenReturn(expected);
 
         this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].album_id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Soca Gold 2018"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].sales").value(2500))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseDate").value("19/07/1998"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].genre").value(Genre.AFROBEATS.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].artist").value(frankOcean))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].album_id").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title").value("To Pimp a Butterfly"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].stock").value(150))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].sales").value(2300))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseDate").value("19/07/1998"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].genre").value(Genre.HIPHOP.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value(kendrickLamar));
+    }
+
+    @Test
+    @DisplayName("GET /albums in stock")
+    void testGetAllAlbumsInStock() throws Exception {
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/07/1987").build();
+
+        List<Album> expected = List.of(
+                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean),
+                new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(1998, 7, 19), Genre.HIPHOP, kendrickLamar)
+        );
+
+        when(mockAlbumServiceImpl.getAllAlbumsInStock()).thenReturn(expected);
+
+        this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/available"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].album_id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Soca Gold 2018"))
