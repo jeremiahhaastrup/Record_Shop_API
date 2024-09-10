@@ -29,6 +29,17 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
+    public List<Album> getAllAlbumsInStock() {
+        List<Album> albums = new ArrayList<>();
+        for (Album album : albumRepository.findAll()) {
+            if (album.getStock() > 1) {
+                albums.add(album);
+            }
+        }
+        return albums;
+    }
+
+    @Override
     public Album getAlbumById(Long id) {
         return albumRepository.findById(id).orElseThrow(
                 () -> new NoSuchAlbumException(String.format("Album ID '%s' does not exist!👎🏽", id))
