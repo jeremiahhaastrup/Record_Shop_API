@@ -3,13 +3,13 @@ package com.example.RecordShop.controller;
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.service.AlbumService;
 import com.example.RecordShop.service.AlbumServiceImpl;
+import com.example.RecordShop.type.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/albums")
@@ -36,6 +36,12 @@ public class AlbumController {
     @GetMapping("/artist/{name}")
     public ResponseEntity<List<Album>> getAlbumsByArtist(@PathVariable String name) {
         List<Album> albums = albumService.findByArtistName(name);
+        return new ResponseEntity<>(albums, HttpStatus.OK);
+    }
+
+    @GetMapping("/genre")
+    public ResponseEntity<List<Album>> getAlbumsByGenre(@RequestParam(value="genre") Genre genre) {
+        List<Album> albums = albumService.findByAlbumsGenre(genre);
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 
