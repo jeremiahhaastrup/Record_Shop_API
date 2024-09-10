@@ -173,4 +173,24 @@ class AlbumServiceImplTest {
         assertIterableEquals(actual, expected);
     }
 
+    @Test
+    @DisplayName("GET /albums/{genre}")
+    void testGetAlbumsGenre() {
+
+        Genre genre = Genre.AFROBEATS;
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+
+        List<Album> expected = List.of(
+                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.SOCA, frankOcean),
+                new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.AFROBEATS, frankOcean)
+        );
+
+        when(mockAlbumRepository.findByGenre(genre)).thenReturn(expected);
+
+        List<Album> actual = albumServiceImpl.findByAlbumsGenre(genre);
+
+        assertEquals(actual, expected);
+    }
+
 }
