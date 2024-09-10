@@ -21,6 +21,11 @@ public class AlbumController {
         return new ResponseEntity<>(albumService.getAllAlbums(), HttpStatus.OK);
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<List<Album>> getAllAlbumsInStock() {
+        return new ResponseEntity<>(albumService.getAllAlbumsInStock(), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Album> getAlbumById(@PathVariable Long id) {
         Album album = albumService.getAlbumById(id);
