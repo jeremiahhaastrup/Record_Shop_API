@@ -2,6 +2,7 @@ package com.example.RecordShop.controller;
 
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.service.AlbumService;
+import com.example.RecordShop.service.AlbumServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,12 @@ public class AlbumController {
     public ResponseEntity<Album> getAlbumById(@PathVariable Long id) {
         Album album = albumService.getAlbumById(id);
         return new ResponseEntity<>(album, HttpStatus.OK);
+    }
+
+    @GetMapping("/artist/{name}")
+    public ResponseEntity<List<Album>> getAlbumsByArtist(@PathVariable String name) {
+        List<Album> albums = albumService.findByArtistName(name);
+        return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 
     @PostMapping
