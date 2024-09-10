@@ -11,4 +11,5 @@ public interface AlbumService {
     Album updateAlbum(Album album, Long id);
     void deleteAlbum(Long id);
     List<Album> getAllAlbumsInStock();
+    List<Album> findByArtistName(String name);
 }
