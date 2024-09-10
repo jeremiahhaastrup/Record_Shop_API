@@ -146,6 +146,38 @@ class AlbumControllerTest {
     }
 
     @Test
+    @DisplayName("GET /albums/genre?name={genre}")
+    void testGetAllAlbumsByGenre() throws Exception {
+
+        Genre genre = Genre.AFROBEATS;
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+
+        List<Album> expected = List.of(
+                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean),
+                new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean)
+        );
+
+        when(mockAlbumServiceImpl.findByAlbumsGenre(genre)).thenReturn(expected);
+
+        this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/genre").param("genre", genre.toString()))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].album_id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Soca Gold 2018"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].stock").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].sales").value(2500))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseDate").value("19/07/1998"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].genre").value(Genre.AFROBEATS.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].artist").value(frankOcean))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].album_id").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title").value("To Pimp a Butterfly"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].stock").value(150))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].sales").value(2300))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseDate").value("19/07/1998"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].genre").value(Genre.AFROBEATS.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value(frankOcean));
+    }
+
+    @Test
     @DisplayName("POST /albums")
     void testPostAlbum() throws Exception {
 
@@ -154,7 +186,7 @@ class AlbumControllerTest {
 
         when(mockAlbumServiceImpl.getAlbumById(expected.getAlbum_id())).thenReturn(expected);
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.post("http://localhost:8080/api/v1/albums")
+        this.mockMvcController.perform(MockMvcRequestBuilders.post("/api/v1/albums")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(expected)))
                         .andExpect(status().isCreated());
@@ -194,7 +226,7 @@ class AlbumControllerTest {
         when(mockAlbumServiceImpl.getAlbumById(currentAlbum.getAlbum_id())).thenReturn(currentAlbum);
         when(mockAlbumServiceImpl.updateAlbum(currentAlbum, 1L)).thenReturn(newAlbum);
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.put("http://localhost:8080/api/v1/albums/1")
+        this.mockMvcController.perform(MockMvcRequestBuilders.put("/api/v1/albums/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(newAlbum)))
                         .andExpect(status().isCreated());
@@ -205,7 +237,7 @@ class AlbumControllerTest {
     void testDeleteAlbum() throws Exception {
         Long id = 1L;
         ResultActions result = mockMvcController.perform(
-                MockMvcRequestBuilders.delete("http://localhost:8080/api/v1/albums/{id}", id)
+                MockMvcRequestBuilders.delete("/api/v1/albums/{id}", id)
         );
         result.andExpect(status().isNoContent());
     }
