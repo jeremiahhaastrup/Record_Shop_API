@@ -1,6 +1,7 @@
 package com.example.RecordShop.service;
 
 import com.example.RecordShop.model.Album;
+import com.example.RecordShop.type.Genre;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface AlbumService {
     void deleteAlbum(Long id);
     List<Album> getAllAlbumsInStock();
     List<Album> findByArtistName(String name);
+    List<Album> findByAlbumsGenre(Genre genre);
 }

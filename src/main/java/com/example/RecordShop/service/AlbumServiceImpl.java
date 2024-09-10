@@ -4,6 +4,7 @@ import com.example.RecordShop.exception.AlbumAlreadyExistsException;
 import com.example.RecordShop.exception.NoSuchAlbumException;
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.repository.AlbumRepository;
+import com.example.RecordShop.type.Genre;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,5 +71,10 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public List<Album> findByArtistName(String name) {
         return albumRepository.findByArtistName(name);
+    }
+
+    @Override
+    public List<Album> findByAlbumsGenre(Genre genre) {
+        return albumRepository.findByGenre(genre);
     }
 }
