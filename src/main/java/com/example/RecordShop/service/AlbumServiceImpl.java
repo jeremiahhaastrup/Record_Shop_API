@@ -69,8 +69,8 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<Album> findByArtistName(String name) {
-        return albumRepository.findByArtistName(name);
+    public List<Album> findByArtistNameContainingIgnoreCase(String name) {
+        return albumRepository.findByArtistNameContainingIgnoreCase(name);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Album findByTitle(String title) {
+    public List<Album> findByTitle(String title) {
         return albumRepository.findByTitleContainingIgnoreCase(title);
     }
 }

@@ -11,9 +11,9 @@ import java.util.List;
 
 @Repository
 public interface AlbumRepository extends JpaRepository <Album, Long> {
-    List<Album> findByArtistName(String name);
+    List<Album> findByArtistNameContainingIgnoreCase(String name);
     List<Album> findByGenre(Genre genre);
-    Album findByTitleContainingIgnoreCase(@Param("title") String title);
+    List<Album> findByTitleContainingIgnoreCase(@Param("title") String title);
 
     @Query(value = "SELECT a FROM album a WHERE YEAR(a.releaseDate) = :year", nativeQuery = true)
     List<Album> findByReleaseYear(@Param("year") int year);

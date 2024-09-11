@@ -154,7 +154,7 @@ class AlbumServiceImplTest {
     }
 
     @Test
-    @DisplayName("GET /albums/artist/{id}")
+    @DisplayName("GET /albums/artist?name=")
     void testGetAlbumsByArtist() {
 
         String name = "Frank Ocean";
@@ -166,9 +166,9 @@ class AlbumServiceImplTest {
                 new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.HIPHOP, frankOcean)
         );
 
-        when(mockAlbumRepository.findByArtistName(name)).thenReturn(expected);
+        when(mockAlbumRepository.findByArtistNameContainingIgnoreCase(name)).thenReturn(expected);
 
-        List<Album> actual = albumServiceImpl.findByArtistName(name);
+        List<Album> actual = albumServiceImpl.findByArtistNameContainingIgnoreCase(name);
 
         assertIterableEquals(actual, expected);
     }
@@ -220,11 +220,13 @@ class AlbumServiceImplTest {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
-        Album expected = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.SOCA, frankOcean);
+        List<Album> expected = List.of(
+            new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.SOCA, frankOcean)
+        );
 
         when(mockAlbumRepository.findByTitleContainingIgnoreCase(title)).thenReturn(expected);
 
-        Album actual = albumServiceImpl.findByTitle(title);
+        List<Album> actual = albumServiceImpl.findByTitle(title);
 
         assertEquals(actual, expected);
     }

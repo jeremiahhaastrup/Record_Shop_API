@@ -6,7 +6,6 @@ import com.example.RecordShop.exception.NoSuchAlbumTitleException;
 import com.example.RecordShop.exception.NoSuchArtistException;
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.service.AlbumService;
-import com.example.RecordShop.service.AlbumServiceImpl;
 import com.example.RecordShop.type.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,9 +36,9 @@ public class AlbumController {
         return new ResponseEntity<>(album, HttpStatus.OK);
     }
 
-    @GetMapping("/artist/{name}")
-    public ResponseEntity<List<Album>> getAlbumsByArtist(@PathVariable String name) {
-        List<Album> albums = albumService.findByArtistName(name);
+    @GetMapping("/artist")
+    public ResponseEntity<List<Album>> getAlbumsByArtist(@RequestParam(value = "name") String name) {
+        List<Album> albums = albumService.findByArtistNameContainingIgnoreCase(name);
         if (albums != null) {
             return new ResponseEntity<>(albums, HttpStatus.OK);
         } else {
@@ -68,8 +67,8 @@ public class AlbumController {
     }
 
     @GetMapping("/title")
-    public ResponseEntity <Album> getAllAlbumByTitle(@RequestParam(value="name") String title) {
-        Album album = albumService.findByTitle(title);
+    public ResponseEntity <List<Album>> getAllAlbumByTitle(@RequestParam(value="name") String title) {
+        List<Album> album = albumService.findByTitle(title);
         if (album != null) {
             return new ResponseEntity<>(album, HttpStatus.OK);
         } else {

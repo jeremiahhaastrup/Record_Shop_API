@@ -12,8 +12,8 @@ public interface AlbumService {
     Album updateAlbum(Album album, Long id);
     void deleteAlbum(Long id);
     List<Album> getAllAlbumsInStock();
-    List<Album> findByArtistName(String name);
+    List<Album> findByArtistNameContainingIgnoreCase(String name);
     List<Album> findByAlbumsGenre(Genre genre);
     List<Album> findByReleaseYear(int year);
-    Album findByTitle(String title);
+    List<Album> findByTitle(String title);
 }

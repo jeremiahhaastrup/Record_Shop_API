@@ -17,14 +17,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.time.LocalDate;
 import java.util.List;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -90,7 +88,7 @@ class AlbumControllerTest {
     }
 
     @Test
-    @DisplayName("GET /albums/artist/{name}")
+    @DisplayName("GET /albums/artist?name={name}")
     void testGetAllAlbumsByArtist() throws Exception {
 
         String name = "Frank Ocean";
@@ -101,9 +99,9 @@ class AlbumControllerTest {
                 new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(1998, 7, 19), Genre.HIPHOP, frankOcean)
         );
 
-        when(mockAlbumServiceImpl.findByArtistName(name)).thenReturn(expected);
+        when(mockAlbumServiceImpl.findByArtistNameContainingIgnoreCase(name)).thenReturn(expected);
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/artist/{name}", name)
+        this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/artist?name={name}", name)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(expected)))
                 .andExpect(status().isOk());
@@ -159,8 +157,9 @@ class AlbumControllerTest {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
-        Album expected = new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean);
-
+        List<Album> expected = List.of(
+                new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean)
+        );
         when(mockAlbumServiceImpl.findByTitle(title)).thenReturn(expected);
 
         this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/title").param("name", title)
