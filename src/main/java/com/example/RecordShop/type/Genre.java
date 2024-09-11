@@ -9,4 +9,5 @@ public enum Genre {
     SALSA,
     BLUES,
     LATIN_ALTERNATIVE;
+
 }
