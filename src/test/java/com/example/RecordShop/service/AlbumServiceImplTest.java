@@ -222,7 +222,7 @@ class AlbumServiceImplTest {
 
         Album expected = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.SOCA, frankOcean);
 
-        when(mockAlbumRepository.findByTitle(title)).thenReturn(expected);
+        when(mockAlbumRepository.findByTitleContainingIgnoreCase(title)).thenReturn(expected);
 
         Album actual = albumServiceImpl.findByTitle(title);
 

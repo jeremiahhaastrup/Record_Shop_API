@@ -13,9 +13,7 @@ import java.util.List;
 public interface AlbumRepository extends JpaRepository <Album, Long> {
     List<Album> findByArtistName(String name);
     List<Album> findByGenre(Genre genre);
-
-    @Query(value = "SELECT a FROM album a WHERE LOWER(a.title) = LOWE(:title)")
-    Album findByTitle(String title);
+    Album findByTitleContainingIgnoreCase(@Param("title") String title);
 
     @Query(value = "SELECT a FROM album a WHERE YEAR(a.releaseDate) = :year", nativeQuery = true)
     List<Album> findByReleaseYear(@Param("year") int year);

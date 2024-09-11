@@ -1,10 +1,7 @@
 package com.example.RecordShop.service;
 
-import com.example.RecordShop.exception.AlbumAlreadyExistsException;
 import com.example.RecordShop.exception.ArtistAlreadyExistsException;
-import com.example.RecordShop.exception.NoSuchAlbumException;
 import com.example.RecordShop.exception.NoSuchArtistException;
-import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.repository.ArtistRepository;
 import org.springframework.beans.BeanUtils;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -40,7 +36,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Artist getArtistById(Long id) {
         return artistRepository.findById(id).orElseThrow(
-                () -> new NoSuchArtistException(String.format("Album ID '%s' does not exist!👎🏽", id))
+                () -> new NoSuchArtistException(String.format("Artist ID '%s' does not exist!👎🏽", id))
         );
     }
 
@@ -51,7 +47,7 @@ public class ArtistServiceImpl implements ArtistService {
             BeanUtils.copyProperties(patchedArtist, currentArtist.get(), "album_id");
             return artistRepository.save(currentArtist.get());
         } else {
-            throw new NoSuchAlbumException(String.format("Album ID '%s' does not exist!👎🏽", id));
+            throw new NoSuchArtistException(String.format("Artist ID '%s' does not exist!👎🏽", id));
         }
     }
 

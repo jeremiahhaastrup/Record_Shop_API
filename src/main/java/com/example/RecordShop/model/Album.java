@@ -40,6 +40,6 @@ public class Album {
     private Genre genre;
 
     @ManyToOne()
-    @JoinColumn(name = "artist_id", nullable = true)
+    @JoinColumn(name = "artist_id")
     private Artist artist;
 }
