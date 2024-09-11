@@ -123,10 +123,32 @@ class AlbumControllerTest {
 
         when(mockAlbumServiceImpl.findByAlbumsGenre(genre)).thenReturn(expected);
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/genre").param("genre", genre.toString())
+        this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/genre").param("name", genre.toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(expected)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("GET /albums/released?year={year}")
+    void testGetAllAlbumsByReleaseYear() throws Exception {
+
+        int year = 1998;
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
+
+        List<Album> expected = List.of(
+                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean),
+                new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean)
+        );
+
+        when(mockAlbumServiceImpl.findByReleaseYear(year)).thenReturn(expected);
+
+        this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/released").param("year", String.valueOf(year))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(expected)))
+                        .andExpect(status().isOk());
+
+        verify(mockAlbumServiceImpl, times(2)).findByReleaseYear(year);
     }
 
     @Test
