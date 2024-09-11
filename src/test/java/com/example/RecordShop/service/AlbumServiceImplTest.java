@@ -174,7 +174,7 @@ class AlbumServiceImplTest {
     }
 
     @Test
-    @DisplayName("GET /albums/{genre}")
+    @DisplayName("GET /albums/genre?name={genre}")
     void testGetAlbumsGenre() {
 
         Genre genre = Genre.AFROBEATS;
@@ -182,13 +182,32 @@ class AlbumServiceImplTest {
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
         List<Album> expected = List.of(
-                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.SOCA, frankOcean),
+                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean),
                 new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.AFROBEATS, frankOcean)
         );
 
         when(mockAlbumRepository.findByGenre(genre)).thenReturn(expected);
 
         List<Album> actual = albumServiceImpl.findByAlbumsGenre(genre);
+
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    @DisplayName("GET /albums/release?year=")
+    void testGetAlbumsByYear() {
+
+        int year = 2022;
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
+
+        List<Album> expected = List.of(
+                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.SOCA, frankOcean)
+        );
+
+        when(mockAlbumRepository.findByReleaseYear(year)).thenReturn(expected);
+
+        List<Album> actual = albumServiceImpl.findByReleaseYear(year);
 
         assertEquals(actual, expected);
     }
