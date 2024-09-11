@@ -31,7 +31,7 @@ public class Album {
     int sales;
 
     @Column(name = "releaseDate")
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate releaseDate;
 
