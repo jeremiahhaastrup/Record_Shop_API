@@ -36,6 +36,27 @@ public class GlobalExceptionHandler {
                 .body(exception.getMessage());
     }
 
+    @ExceptionHandler({NoSuchAlbumGenreException.class})
+    public ResponseEntity<Object> handleAlbumNotFoundException(NoSuchAlbumGenreException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler({NoSuchAlbumReleaseYearException.class})
+    public ResponseEntity<Object> handleAlbumNotFoundException(NoSuchAlbumReleaseYearException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler({NoSuchAlbumTitleException.class})
+    public ResponseEntity<Object> handleAlbumNotFoundException(NoSuchAlbumTitleException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exception.getMessage());
+    }
+
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<Object> handleRuntimeException(RuntimeException exception) {
         return ResponseEntity
