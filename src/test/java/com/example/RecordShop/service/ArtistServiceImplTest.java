@@ -1,10 +1,8 @@
 package com.example.RecordShop.service;
 
 import com.example.RecordShop.exception.NoSuchArtistException;
-import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.repository.ArtistRepository;
-import com.example.RecordShop.type.Genre;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,8 +30,8 @@ class ArtistServiceImplTest {
     @DisplayName("GET /artists")
     void getAllArtists() {
 
-        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
-        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
+        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 6, 17)).build();
 
         List<Artist> expected = List.of(
                 frankOcean,
@@ -51,8 +49,8 @@ class ArtistServiceImplTest {
     @DisplayName("POST /artists")
     void postArtist() {
 
-        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
-        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
+        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 6, 17)).build();
 
         when(mockArtistRepository.save(frankOcean)).thenReturn(frankOcean);
         when(mockArtistRepository.save(kendrickLamar)).thenReturn(kendrickLamar);
@@ -69,7 +67,7 @@ class ArtistServiceImplTest {
     @DisplayName("GET /artists/{id}")
     void getArtistById() {
 
-        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
         when(mockArtistRepository.findById(frankOcean.getArtist_id())).thenReturn(Optional.of(frankOcean));
 
@@ -88,8 +86,8 @@ class ArtistServiceImplTest {
     @DisplayName("PUT /artists")
     void putArtist() {
 
-        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
-        Artist kendrickLamar = Artist.builder().artist_id(1L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
+        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 6, 17)).build();
 
         when(mockArtistRepository.findById(frankOcean.getArtist_id())).thenReturn(Optional.of(frankOcean));
         when(mockArtistRepository.save(frankOcean)).thenReturn(kendrickLamar);

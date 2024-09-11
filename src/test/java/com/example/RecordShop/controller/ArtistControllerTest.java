@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -51,8 +52,8 @@ class ArtistControllerTest {
     @DisplayName("GET /artists")
     void testGetAllArtists() throws Exception {
 
-        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
-        Artist kendrickLamar = Artist.builder().artist_id(2L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/07/1987").build();
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
+        Artist kendrickLamar = Artist.builder().artist_id(2L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 7, 17)).build();
 
         List<Artist> expected = List.of(
                 frankOcean,
@@ -77,11 +78,11 @@ class ArtistControllerTest {
     @DisplayName("POST /artists")
     void testPostArtist() throws Exception {
 
-        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("29/10/1987").build();
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
         when(mockArtistServiceImpl.addArtist(frankOcean)).thenReturn(frankOcean);
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.post("http://localhost:8080/api/v1/artists")
+        this.mockMvcController.perform(MockMvcRequestBuilders.post("/api/v1/artists")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(frankOcean)))
                         .andExpect(status().isCreated());
@@ -92,7 +93,7 @@ class ArtistControllerTest {
     @DisplayName("GET /artists/{id}")
     void testGetArtistById() throws Exception {
 
-        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
         when(mockArtistServiceImpl.getArtistById(frankOcean.getArtist_id())).thenReturn(frankOcean);
 
@@ -109,13 +110,13 @@ class ArtistControllerTest {
     @DisplayName("PUT /artists")
     void testPutArtist() throws Exception {
 
-        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth("28/10/1987").build();
-        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth("17/06/1987").build();
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
+        Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 6, 17)).build();
 
         when(mockArtistServiceImpl.getArtistById(frankOcean.getArtist_id())).thenReturn(frankOcean);
         when(mockArtistServiceImpl.updateArtist(frankOcean, 1L)).thenReturn(kendrickLamar);
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.put("http://localhost:8080/api/v1/artists/1")
+        this.mockMvcController.perform(MockMvcRequestBuilders.put("/api/v1/artists/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(kendrickLamar)))
                         .andExpect(status().isCreated());
@@ -127,7 +128,7 @@ class ArtistControllerTest {
         Long id = 1L;
 
         ResultActions result = mockMvcController.perform(
-                MockMvcRequestBuilders.delete("http://localhost:8080/api/v1/artists/{id}", id)
+                MockMvcRequestBuilders.delete("/api/v1/artists/{id}", id)
         );
         result.andExpect(status().isNoContent());
     }
