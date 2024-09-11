@@ -148,7 +148,7 @@ class AlbumControllerTest {
                         .content(mapper.writeValueAsString(expected)))
                         .andExpect(status().isOk());
 
-        verify(mockAlbumServiceImpl, times(2)).findByReleaseYear(year);
+        verify(mockAlbumServiceImpl, times(1)).findByReleaseYear(year);
     }
 
     @Test
