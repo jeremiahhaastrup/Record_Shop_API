@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -28,9 +29,9 @@ public class Artist {
     private String name;
 
     @Column(name = "dateOfBirth")
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private String dateOfBirth;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dateOfBirth;
 
     @Column(name = "placeOfBirth")
     private String placeOfBirth;
