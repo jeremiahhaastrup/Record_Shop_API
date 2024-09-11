@@ -85,6 +85,6 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public Album findByTitle(String title) {
-        return albumRepository.findByTitle(title);
+        return albumRepository.findByTitleContainingIgnoreCase(title);
     }
 }
