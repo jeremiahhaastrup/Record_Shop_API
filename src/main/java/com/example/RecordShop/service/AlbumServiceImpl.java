@@ -7,6 +7,10 @@ import com.example.RecordShop.repository.AlbumRepository;
 import com.example.RecordShop.type.Genre;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@CacheConfig(cacheNames = {"AlbumCache"})
 public class AlbumServiceImpl implements AlbumService {
 
     @Autowired
@@ -37,6 +42,7 @@ public class AlbumServiceImpl implements AlbumService {
         return albums;
     }
 
+    @Cacheable
     @Override
     public Album getAlbumById(Long id) {
         return albumRepository.findById(id).orElseThrow(
@@ -52,6 +58,7 @@ public class AlbumServiceImpl implements AlbumService {
         } else throw new AlbumAlreadyExistsException(String.format("'%s' already exists!🧐", album.getTitle()));
     }
 
+    @CachePut
     @Override
     public Album updateAlbum(Album patchedAlbum, Long id) {
         Optional<Album> currentAlbum = albumRepository.findById(id);
@@ -63,6 +70,7 @@ public class AlbumServiceImpl implements AlbumService {
         }
     }
 
+    @CacheEvict
     @Override
     public void deleteAlbum(Long id) {
        albumRepository.deleteById(id);
