@@ -51,6 +51,12 @@ public class AlbumController {
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 
+    @GetMapping("/title")
+    public ResponseEntity <Album> getAllAlbumByTitle(@RequestParam(value="name") String title) {
+        Album album = albumService.findByTitle(title);
+        return new ResponseEntity<>(album, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Album> addAlbum(@RequestBody Album album) {
         Album addAlbum = albumService.addAlbum(album);
