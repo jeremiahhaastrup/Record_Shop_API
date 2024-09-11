@@ -1,5 +1,9 @@
 package com.example.RecordShop.controller;
 
+import com.example.RecordShop.exception.NoSuchAlbumGenreException;
+import com.example.RecordShop.exception.NoSuchAlbumReleaseYearException;
+import com.example.RecordShop.exception.NoSuchAlbumTitleException;
+import com.example.RecordShop.exception.NoSuchArtistException;
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.service.AlbumService;
 import com.example.RecordShop.service.AlbumServiceImpl;
@@ -36,25 +40,41 @@ public class AlbumController {
     @GetMapping("/artist/{name}")
     public ResponseEntity<List<Album>> getAlbumsByArtist(@PathVariable String name) {
         List<Album> albums = albumService.findByArtistName(name);
-        return new ResponseEntity<>(albums, HttpStatus.OK);
+        if (albums != null) {
+            return new ResponseEntity<>(albums, HttpStatus.OK);
+        } else {
+            throw new NoSuchArtistException(String.format("'%s' does not exist!👎🏽", name));
+        }
     }
 
     @GetMapping("/genre")
     public ResponseEntity<List<Album>> getAlbumsByGenre(@RequestParam(value="name") Genre genre) {
         List<Album> albums = albumService.findByAlbumsGenre(genre);
-        return new ResponseEntity<>(albums, HttpStatus.OK);
+        if (albums != null) {
+            return new ResponseEntity<>(albums, HttpStatus.OK);
+        } else {
+            throw new NoSuchAlbumGenreException(String.format("'%s' does not exist!👎🏽", genre));
+        }
     }
 
     @GetMapping("/released")
     public ResponseEntity<List<Album>> getAllAlbumsByReleaseYear(@RequestParam(value="year") int year) {
         List<Album> albums = albumService.findByReleaseYear(year);
-        return new ResponseEntity<>(albums, HttpStatus.OK);
+        if (albums != null) {
+            return new ResponseEntity<>(albums, HttpStatus.OK);
+        } else {
+            throw new NoSuchAlbumReleaseYearException(String.format("'%s' does not exist!👎🏽", year));
+        }
     }
 
     @GetMapping("/title")
     public ResponseEntity <Album> getAllAlbumByTitle(@RequestParam(value="name") String title) {
         Album album = albumService.findByTitle(title);
-        return new ResponseEntity<>(album, HttpStatus.OK);
+        if (album != null) {
+            return new ResponseEntity<>(album, HttpStatus.OK);
+        } else {
+            throw new NoSuchAlbumTitleException(String.format("'%s' does not exist!👎🏽", title));
+        }
     }
 
     @PostMapping
