@@ -82,4 +82,9 @@ public class AlbumServiceImpl implements AlbumService {
     public List<Album> findByReleaseYear(int year) {
         return albumRepository.findByReleaseYear(year);
     }
+
+    @Override
+    public Album findByTitle(String title) {
+        return albumRepository.findByTitle(title);
+    }
 }

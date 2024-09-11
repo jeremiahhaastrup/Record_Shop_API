@@ -15,4 +15,5 @@ public interface AlbumService {
     List<Album> findByArtistName(String name);
     List<Album> findByAlbumsGenre(Genre genre);
     List<Album> findByReleaseYear(int year);
+    Album findByTitle(String title);
 }
