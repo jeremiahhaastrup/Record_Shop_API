@@ -152,6 +152,26 @@ class AlbumControllerTest {
     }
 
     @Test
+    @DisplayName("GET /albums/title?name={title}")
+    void testGetAlbumByTitle() throws Exception {
+
+        String title = "Soca Gold 2018";
+
+        Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
+
+        Album expected = new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean);
+
+        when(mockAlbumServiceImpl.findByTitle(title)).thenReturn(expected);
+
+        this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/albums/title").param("name", title)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(expected)))
+                        .andExpect(status().isOk());
+
+        verify(mockAlbumServiceImpl, times(1)).findByTitle(title);
+    }
+
+    @Test
     @DisplayName("POST /albums")
     void testPostAlbum() throws Exception {
 
