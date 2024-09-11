@@ -40,8 +40,14 @@ public class AlbumController {
     }
 
     @GetMapping("/genre")
-    public ResponseEntity<List<Album>> getAlbumsByGenre(@RequestParam(value="genre") Genre genre) {
+    public ResponseEntity<List<Album>> getAlbumsByGenre(@RequestParam(value="name") Genre genre) {
         List<Album> albums = albumService.findByAlbumsGenre(genre);
+        return new ResponseEntity<>(albums, HttpStatus.OK);
+    }
+
+    @GetMapping("/released")
+    public ResponseEntity<List<Album>> getAllAlbumsByReleaseYear(@RequestParam(value="year") int year) {
+        List<Album> albums = albumService.findByReleaseYear(year);
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 
