@@ -2,7 +2,6 @@ package com.example.RecordShop.controller;
 
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
-import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
