@@ -24,6 +24,9 @@ public class Album {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "imageUrl")
+    private String imageUrl;
+
     @Column(name = "stock")
     int stock;
 
