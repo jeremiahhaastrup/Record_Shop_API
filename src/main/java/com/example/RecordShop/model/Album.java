@@ -27,11 +27,8 @@ public class Album {
     @Column(name = "imageUrl")
     private String imageUrl;
 
-    @Column(name = "stock")
-    int stock;
-
-    @Column(name = "sales")
-    int sales;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "releaseDate")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
