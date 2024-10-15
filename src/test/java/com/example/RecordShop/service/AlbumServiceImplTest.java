@@ -36,8 +36,8 @@ class AlbumServiceImplTest {
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 6, 17)).build();
 
         List<Album> expected = List.of(
-                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean),
-                new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar)
+                new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean),
+                new Album(2L, "To Pimp a Butterfly", "To_Pimp_a_Butterfly.jpeg", 150, 2300, "description", LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar)
         );
 
         when(mockAlbumRepository.findAll()).thenReturn(expected);
@@ -55,8 +55,8 @@ class AlbumServiceImplTest {
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 6, 17)).build();
 
         List<Album> expected = List.of(
-                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean),
-                new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar)
+                new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean),
+                new Album(2L, "To Pimp a Butterfly", "To_Pimp_a_Butterfly.jpeg", 150, 2300, "description", LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar)
         );
 
         when(mockAlbumRepository.findAll()).thenReturn(expected);
@@ -73,8 +73,8 @@ class AlbumServiceImplTest {
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 6, 17)).build();
 
-        Album expected1 = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
-        Album expected2 = new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar);
+        Album expected1 = new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
+        Album expected2 = new Album(2L, "To Pimp a Butterfly", "To_Pimp_a_Butterfly.jpeg", 150, 2300, "description", LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar);
 
         when(mockAlbumRepository.save(expected1)).thenReturn(expected1);
         when(mockAlbumRepository.save(expected2)).thenReturn(expected2);
@@ -92,7 +92,7 @@ class AlbumServiceImplTest {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
-        Album expected1 = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
+        Album expected1 = new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
 
         when(mockAlbumRepository.findById(expected1.getAlbum_id())).thenReturn(Optional.of(expected1));
 
@@ -114,8 +114,8 @@ class AlbumServiceImplTest {
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 6, 17)).build();
 
-        Album currentAlbum = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
-        Album newAlbum = new Album(1L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar);
+        Album currentAlbum = new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
+        Album newAlbum = new Album(1L, "To Pimp a Butterfly", "To_Pimp_a_Butterfly.jpeg", 150, 2300, "description", LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar);
 
         when(mockAlbumRepository.findById(currentAlbum.getAlbum_id())).thenReturn(Optional.of(currentAlbum));
         when(mockAlbumRepository.save(currentAlbum)).thenReturn(newAlbum);
@@ -135,8 +135,8 @@ class AlbumServiceImplTest {
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 6, 17)).build();
 
-        Album expected1 = new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
-        Album expected2 = new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar);
+        Album expected1 = new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
+        Album expected2 = new Album(2L, "To Pimp a Butterfly", "To_Pimp_a_Butterfly.jpeg", 150, 2300, "description", LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar);
 
         assertAll(
                 () -> assertThrows(NoSuchAlbumException.class, () -> albumServiceImpl.updateAlbum(expected1, 1L)),
@@ -162,8 +162,8 @@ class AlbumServiceImplTest {
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
         List<Album> expected = List.of(
-                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean),
-                new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.HIPHOP, frankOcean)
+                new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean),
+                new Album(2L, "To Pimp a Butterfly", "To_Pimp_a_Butterfly.jpeg", 150, 2300, "description", LocalDate.of(2023, 4, 12), Genre.HIPHOP, frankOcean)
         );
 
         when(mockAlbumRepository.findByArtistNameContainingIgnoreCase(name)).thenReturn(expected);
@@ -182,8 +182,8 @@ class AlbumServiceImplTest {
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
         List<Album> expected = List.of(
-                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean),
-                new Album(2L, "To Pimp a Butterfly", 150, 2300, LocalDate.of(2023, 4, 12), Genre.AFROBEATS, frankOcean)
+                new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean),
+                new Album(2L, "To Pimp a Butterfly", "To_Pimp_a_Butterfly.jpeg", 150, 2300, "description", LocalDate.of(2023, 4, 12), Genre.AFROBEATS, frankOcean)
         );
 
         when(mockAlbumRepository.findByGenre(genre)).thenReturn(expected);
@@ -202,7 +202,7 @@ class AlbumServiceImplTest {
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
         List<Album> expected = List.of(
-                new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.SOCA, frankOcean)
+                new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.SOCA, frankOcean)
         );
 
         when(mockAlbumRepository.findByReleaseYear(year)).thenReturn(expected);
@@ -221,7 +221,7 @@ class AlbumServiceImplTest {
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
         List<Album> expected = List.of(
-            new Album(1L, "Soca Gold 2018", 200, 2500, LocalDate.of(2022, 8, 15), Genre.SOCA, frankOcean)
+            new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.SOCA, frankOcean)
         );
 
         when(mockAlbumRepository.findByTitleContainingIgnoreCase(title)).thenReturn(expected);
