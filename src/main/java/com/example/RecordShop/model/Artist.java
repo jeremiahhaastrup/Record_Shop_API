@@ -28,6 +28,9 @@ public class Artist {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "imageUrl")
+    private String imageUrl;
+
     @Column(name = "dateOfBirth")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
