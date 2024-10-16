@@ -3,11 +3,14 @@ package com.example.RecordShop.controller;
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.service.ArtistService;
+import com.example.RecordShop.service.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,6 +19,14 @@ public class ArtistController {
 
     @Autowired
     ArtistService artistService;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadArtistImage(@RequestParam("file") MultipartFile file) throws IOException {
+        return new ResponseEntity<>(cloudinaryService.uploadImage(file), HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<Artist>> getAllArtists() {
