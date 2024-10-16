@@ -231,12 +231,21 @@ class AlbumControllerTest {
         Album currentAlbum = new Album(1L, "To Pimp a Butterfly", "To_Pimp_a_Butterfly.jpeg", 150, 2300, "description", LocalDate.of(2023, 4, 12), Genre.HIPHOP, kendrickLamar);
         Album newAlbum = new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(2022, 8, 15), Genre.AFROBEATS, frankOcean);
 
+        String albumJson = mapper.writeValueAsString(newAlbum);
+        MockMultipartFile mockFile = new MockMultipartFile("file", "originalFilename.png", "image/png", "file content".getBytes());
+        MockMultipartFile mockAlbum = new MockMultipartFile("album", "album.json", "application/json", albumJson.getBytes());
+
         when(mockAlbumServiceImpl.getAlbumById(currentAlbum.getAlbum_id())).thenReturn(currentAlbum);
         when(mockAlbumServiceImpl.updateAlbum(currentAlbum, 1L)).thenReturn(newAlbum);
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.put("/api/v1/albums/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(newAlbum)))
+        this.mockMvcController.perform(MockMvcRequestBuilders.multipart("/api/v1/albums/1")
+                        .file(mockAlbum)
+                        .file(mockFile)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        }))
                         .andExpect(status().isCreated());
     }
 
