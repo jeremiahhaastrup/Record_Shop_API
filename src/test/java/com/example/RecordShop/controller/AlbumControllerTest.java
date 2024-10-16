@@ -2,6 +2,7 @@ package com.example.RecordShop.controller;
 
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.model.Artist;
+import com.example.RecordShop.service.CloudinaryService;
 import com.example.RecordShop.type.Genre;
 import com.example.RecordShop.service.AlbumServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,15 +14,24 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,6 +41,9 @@ class AlbumControllerTest {
 
     @Mock
     private AlbumServiceImpl mockAlbumServiceImpl;
+
+    @Mock
+    private CloudinaryService cloudinaryService;
 
     @InjectMocks
     private AlbumController albumController;
@@ -229,5 +242,19 @@ class AlbumControllerTest {
                 MockMvcRequestBuilders.delete("/api/v1/albums/{id}", id)
         );
         result.andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("Successful File Upload")
+    void ImageUploadSuccessful() throws IOException {
+        MockMultipartFile mockFile = new MockMultipartFile("image", "originalFilename.png", "image/png", "file content".getBytes());
+        when(cloudinaryService.uploadImage(any(MockMultipartFile.class))).thenReturn("https://url.com/image.png");
+
+        ResponseEntity<String> actual = albumController.uploadAlbumImage(mockFile);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, actual.getStatusCode()),
+                () -> assertEquals("https://url.com/image.png", actual.getBody())
+        );
     }
 }
