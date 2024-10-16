@@ -34,7 +34,9 @@ public class ArtistController {
     }
 
     @PostMapping
-    public ResponseEntity<Artist> addArtist(@RequestBody Artist artist) {
+    public ResponseEntity<Artist> addArtist(@RequestPart("artist") Artist artist, @RequestParam("file") MultipartFile file) throws IOException {
+        String imageUrl = cloudinaryService.uploadImage(file);
+        artist.setImageUrl(imageUrl);
         Artist addArtist = artistService.addArtist(artist);
         return new ResponseEntity<>(addArtist, HttpStatus.CREATED);
     }
