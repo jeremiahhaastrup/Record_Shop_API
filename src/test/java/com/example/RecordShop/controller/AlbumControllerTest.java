@@ -33,6 +33,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -191,11 +192,16 @@ class AlbumControllerTest {
 
         Album expected = new Album(1L, "Soca Gold 2018", "Soca_Gold_2018.jpeg", 200, 2500, "description", LocalDate.of(1998, 7, 19), Genre.AFROBEATS, frankOcean);
 
+        String albumJson = mapper.writeValueAsString(expected);
+        MockMultipartFile mockFile = new MockMultipartFile("file", "originalFilename.png", "image/png", "file content".getBytes());
+        MockMultipartFile mockAlbum = new MockMultipartFile("album", "album.json", "application/json", albumJson.getBytes());
+
         when(mockAlbumServiceImpl.getAlbumById(expected.getAlbum_id())).thenReturn(expected);
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.post("/api/v1/albums")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(expected)))
+        this.mockMvcController.perform(multipart("/api/v1/albums")
+                        .file(mockFile)
+                        .file(mockAlbum)
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
                         .andExpect(status().isCreated());
     }
 
