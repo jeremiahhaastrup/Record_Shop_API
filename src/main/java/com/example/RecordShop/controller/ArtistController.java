@@ -23,11 +23,6 @@ public class ArtistController {
     @Autowired
     private CloudinaryService cloudinaryService;
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadArtistImage(@RequestParam("file") MultipartFile file) throws IOException {
-        return new ResponseEntity<>(cloudinaryService.uploadImage(file), HttpStatus.OK);
-    }
-
     @GetMapping
     public ResponseEntity<List<Artist>> getAllArtists() {
         return new ResponseEntity<>(artistService.getAllArtists(), HttpStatus.OK);
