@@ -30,6 +30,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -90,14 +91,18 @@ class ArtistControllerTest {
 
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
 
+        String artistJson = mapper.writeValueAsString(frankOcean);
+        MockMultipartFile mockFile = new MockMultipartFile("file", "originalFilename.png", "image/png", "file content".getBytes());
+        MockMultipartFile mockArtist = new MockMultipartFile("artist", "artist.json", "application/json", artistJson.getBytes());
+
         when(mockArtistServiceImpl.addArtist(frankOcean)).thenReturn(frankOcean);
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.post("/api/v1/artists")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(frankOcean)))
+        this.mockMvcController.perform(multipart("/api/v1/artists")
+                        .file(mockFile)
+                        .file(mockArtist)
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
                         .andExpect(status().isCreated());
     }
-
 
     @Test
     @DisplayName("GET /artists/{id}")
