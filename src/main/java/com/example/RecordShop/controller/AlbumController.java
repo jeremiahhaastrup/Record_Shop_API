@@ -6,12 +6,15 @@ import com.example.RecordShop.exception.NoSuchAlbumTitleException;
 import com.example.RecordShop.exception.NoSuchArtistException;
 import com.example.RecordShop.model.Album;
 import com.example.RecordShop.service.AlbumService;
+import com.example.RecordShop.service.CloudinaryService;
 import com.example.RecordShop.type.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,6 +22,14 @@ import java.util.List;
 public class AlbumController {
     @Autowired
     private AlbumService albumService;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadAlbumImage(@RequestParam("file") MultipartFile file) throws IOException {
+            return new ResponseEntity<>(cloudinaryService.uploadImage(file), HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<Album>> getAllAlbums() {
