@@ -5,6 +5,7 @@ import com.example.RecordShop.exception.NoSuchAlbumReleaseYearException;
 import com.example.RecordShop.exception.NoSuchAlbumTitleException;
 import com.example.RecordShop.exception.NoSuchArtistException;
 import com.example.RecordShop.model.Album;
+import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.service.AlbumService;
 import com.example.RecordShop.service.CloudinaryService;
 import com.example.RecordShop.type.Genre;
@@ -25,11 +26,6 @@ public class AlbumController {
 
     @Autowired
     private CloudinaryService cloudinaryService;
-
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadAlbumImage(@RequestParam("file") MultipartFile file) throws IOException {
-            return new ResponseEntity<>(cloudinaryService.uploadImage(file), HttpStatus.OK);
-    }
 
     @GetMapping
     public ResponseEntity<List<Album>> getAllAlbums() {
@@ -88,7 +84,9 @@ public class AlbumController {
     }
 
     @PostMapping
-    public ResponseEntity<Album> addAlbum(@RequestBody Album album) {
+    public ResponseEntity<Album> addAlbum(@RequestPart("album") Album album, @RequestParam("file") MultipartFile file) throws IOException {
+        String imageUrl = cloudinaryService.uploadImage(file);
+        album.setImageUrl(imageUrl);
         Album addAlbum = albumService.addAlbum(album);
         return new ResponseEntity<>(addAlbum, HttpStatus.CREATED);
     }
