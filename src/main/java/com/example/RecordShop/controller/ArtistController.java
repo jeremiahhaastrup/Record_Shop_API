@@ -48,7 +48,13 @@ public class ArtistController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Artist> updateArtist(@RequestBody Artist newArtist, @PathVariable Long id) {
+    public ResponseEntity<Artist> updateArtist(@RequestPart("artist") Artist newArtist,
+                                               @RequestParam(value = "file", required = false) MultipartFile file,
+                                               @PathVariable Long id) throws IOException {
+        if (file != null && !file.isEmpty()) {
+            String imageUrl = cloudinaryService.uploadImage(file);
+            newArtist.setImageUrl(imageUrl);
+        }
         return new ResponseEntity<>(artistService.updateArtist(newArtist, id), HttpStatus.CREATED);
     }
 
