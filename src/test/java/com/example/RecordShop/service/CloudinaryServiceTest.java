@@ -36,6 +36,14 @@ class CloudinaryServiceTest {
     }
 
     @Test
+    @DisplayName("Failed File Upload")
+    void ImageUploadFailed() throws IOException {
+        MockMultipartFile mockFile = new MockMultipartFile("image", "originalFilename.png", "image/png", "file content".getBytes());
+        when(cloudinary.uploader().upload(any(byte[].class), anyMap())).thenThrow(RuntimeException.class);
+        assertThrows(IOException.class, () -> cloudinaryService.uploadImage(mockFile));
+    }
+
+    @Test
     @DisplayName("Empty File Uploaded")
     void ImageUploadEmptyFile() throws IOException {
         MockMultipartFile mockFile = new MockMultipartFile("image", "originalFilename.png", "image/png", new byte[0]);
@@ -49,5 +57,6 @@ class CloudinaryServiceTest {
         when(cloudinary.uploader().upload(any(byte[].class), anyMap())).thenReturn(new HashMap<>());
         assertThrows(IOException.class, () -> cloudinaryService.uploadImage(mockFile));
     }
+
 
 }
