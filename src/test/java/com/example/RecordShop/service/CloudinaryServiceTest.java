@@ -12,11 +12,12 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class CloudinaryServiceTest {
 
@@ -33,6 +34,20 @@ class CloudinaryServiceTest {
     void setup() {
         MockitoAnnotations.openMocks(this);
         when(cloudinary.uploader()).thenReturn(uploader);
+    }
+
+    @Test
+    @DisplayName("Successful File Upload")
+    void ImageUploadSuccessful() throws IOException {
+        MockMultipartFile mockFile = new MockMultipartFile("image", "originalFilename.png", "image/png", "file content".getBytes());
+        Map<String, Object> result = new HashMap<>();
+        result.put("secure_url", "https://url.com/image.png");
+
+        when(cloudinary.uploader().upload(any(byte[].class), anyMap())).thenReturn(result);
+        String actual = cloudinaryService.uploadImage(mockFile);
+
+        assertEquals("https://url.com/image.png", actual);
+        verify(uploader, times(1)).upload(any(byte[].class), anyMap());
     }
 
     @Test
