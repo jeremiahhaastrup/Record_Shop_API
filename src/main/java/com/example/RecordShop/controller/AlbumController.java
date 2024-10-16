@@ -92,7 +92,13 @@ public class AlbumController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Album> updateAlbum(@RequestBody Album newAlbum, @PathVariable Long id) {
+    public ResponseEntity<Album> updateAlbum(@RequestPart("album") Album newAlbum,
+                                             @RequestParam(value = "file", required = false) MultipartFile file,
+                                             @PathVariable Long id) throws IOException {
+        if (file != null && !file.isEmpty()) {
+            String imageUrl = cloudinaryService.uploadImage(file);
+            newAlbum.setImageUrl(imageUrl);
+        }
         return new ResponseEntity<>(albumService.updateAlbum(newAlbum, id), HttpStatus.CREATED);
     }
 
