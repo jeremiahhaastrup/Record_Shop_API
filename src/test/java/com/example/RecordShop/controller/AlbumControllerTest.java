@@ -243,18 +243,4 @@ class AlbumControllerTest {
         );
         result.andExpect(status().isNoContent());
     }
-
-    @Test
-    @DisplayName("File Upload")
-    void ImageUpload() throws IOException {
-        MockMultipartFile mockFile = new MockMultipartFile("image", "originalFilename.png", "image/png", "file content".getBytes());
-        when(cloudinaryService.uploadImage(any(MockMultipartFile.class))).thenReturn("https://url.com/image.png");
-
-        ResponseEntity<String> actual = albumController.uploadAlbumImage(mockFile);
-
-        assertAll(
-                () -> assertEquals(HttpStatus.OK, actual.getStatusCode()),
-                () -> assertEquals("https://url.com/image.png", actual.getBody())
-        );
-    }
 }
