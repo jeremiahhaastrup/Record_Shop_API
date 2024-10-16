@@ -128,12 +128,21 @@ class ArtistControllerTest {
         Artist frankOcean = Artist.builder().artist_id(1L).name("Frank Ocean").placeOfBirth("Long Beach, California, USA").dateOfBirth(LocalDate.of(1987, 10, 28)).build();
         Artist kendrickLamar = Artist.builder().artist_id(10L).name("Kendrick Lamar").placeOfBirth("Compton, California, USA").dateOfBirth(LocalDate.of(1987, 6, 17)).build();
 
+        String artistJson = mapper.writeValueAsString(kendrickLamar);
+        MockMultipartFile mockFile = new MockMultipartFile("file", "originalFilename.png", "image/png", "file content".getBytes());
+        MockMultipartFile mockArtist = new MockMultipartFile("artist", "artist.json", "application/json", artistJson.getBytes());
+
         when(mockArtistServiceImpl.getArtistById(frankOcean.getArtist_id())).thenReturn(frankOcean);
         when(mockArtistServiceImpl.updateArtist(frankOcean, 1L)).thenReturn(kendrickLamar);
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.put("/api/v1/artists/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(kendrickLamar)))
+        this.mockMvcController.perform(MockMvcRequestBuilders.multipart("/api/v1/artists/1")
+                        .file(mockArtist)
+                        .file(mockFile)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        }))
                         .andExpect(status().isCreated());
     }
 
