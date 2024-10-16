@@ -245,8 +245,8 @@ class AlbumControllerTest {
     }
 
     @Test
-    @DisplayName("Successful File Upload")
-    void ImageUploadSuccessful() throws IOException {
+    @DisplayName("File Upload")
+    void ImageUpload() throws IOException {
         MockMultipartFile mockFile = new MockMultipartFile("image", "originalFilename.png", "image/png", "file content".getBytes());
         when(cloudinaryService.uploadImage(any(MockMultipartFile.class))).thenReturn("https://url.com/image.png");
 

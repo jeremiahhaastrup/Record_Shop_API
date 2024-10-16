@@ -2,6 +2,8 @@ package com.example.RecordShop.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Uploader;
+import com.example.RecordShop.exception.FailedImageUploadException;
+import com.example.RecordShop.exception.ImageFileEmptyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,14 +57,14 @@ class CloudinaryServiceTest {
     void ImageUploadFailed() throws IOException {
         MockMultipartFile mockFile = new MockMultipartFile("image", "originalFilename.png", "image/png", "file content".getBytes());
         when(cloudinary.uploader().upload(any(byte[].class), anyMap())).thenThrow(RuntimeException.class);
-        assertThrows(IOException.class, () -> cloudinaryService.uploadImage(mockFile));
+        assertThrows(FailedImageUploadException.class, () -> cloudinaryService.uploadImage(mockFile));
     }
 
     @Test
     @DisplayName("Empty File Uploaded")
-    void ImageUploadEmptyFile() throws IOException {
+    void ImageUploadEmptyFile() throws ImageFileEmptyException {
         MockMultipartFile mockFile = new MockMultipartFile("image", "originalFilename.png", "image/png", new byte[0]);
-        assertThrows(IOException.class, () -> cloudinaryService.uploadImage(mockFile));
+        assertThrows(ImageFileEmptyException.class, () -> cloudinaryService.uploadImage(mockFile));
     }
 
     @Test
@@ -70,7 +72,7 @@ class CloudinaryServiceTest {
     void ImageUploadCloudinaryResponse() throws IOException {
         MockMultipartFile mockFile = new MockMultipartFile("image", "originalFilename.png", "image/png", "file content".getBytes());
         when(cloudinary.uploader().upload(any(byte[].class), anyMap())).thenReturn(new HashMap<>());
-        assertThrows(IOException.class, () -> cloudinaryService.uploadImage(mockFile));
+        assertThrows(FailedImageUploadException.class, () -> cloudinaryService.uploadImage(mockFile));
     }
 
 
