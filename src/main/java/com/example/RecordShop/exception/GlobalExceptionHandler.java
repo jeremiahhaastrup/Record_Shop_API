@@ -64,14 +64,14 @@ public class GlobalExceptionHandler {
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler({NoSuchAlbumException.class})
+    @ExceptionHandler({FailedImageUploadException.class})
     public ResponseEntity<Object> handleFailedImageUploadException(FailedImageUploadException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler({NoSuchAlbumException.class})
+    @ExceptionHandler({ImageFileEmptyException.class})
     public ResponseEntity<Object> handleImageFileEmptyException(ImageFileEmptyException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
