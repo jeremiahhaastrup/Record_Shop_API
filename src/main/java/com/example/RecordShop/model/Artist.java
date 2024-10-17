@@ -3,6 +3,7 @@ package com.example.RecordShop.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class Artist {
     @Column(name = "name")
     private String name;
 
+    @Pattern(regexp = "^https://.*\\.(jpg|jpeg|png|gif)$", message = "Image URL must be a valid HTTPS URL with a valid image extension (jpg, jpeg, png, or gif)")
     @Column(name = "imageUrl")
     private String imageUrl;
 
