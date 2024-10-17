@@ -6,6 +6,10 @@ import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.repository.ArtistRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@CacheConfig(cacheNames = {"ArtistCache"})
 public class ArtistServiceImpl implements ArtistService {
 
     @Autowired
@@ -34,6 +39,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    @Cacheable
     public Artist getArtistById(Long id) {
         return artistRepository.findById(id).orElseThrow(
                 () -> new NoSuchArtistException(String.format("Artist ID '%s' does not exist!👎🏽", id))
@@ -41,6 +47,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    @CachePut
     public Artist updateArtist(Artist patchedArtist, Long id) {
         Optional<Artist> currentArtist = artistRepository.findById(id);
         if (currentArtist.isPresent()) {
@@ -52,6 +59,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    @CacheEvict
     public void deleteArtist(Long id) {
         artistRepository.deleteById(id);
     }
