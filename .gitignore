@@ -370,6 +370,8 @@ Desktop.ini
 
 *.properties
 !**/src/main/resources/application.properties
+*.env
+.env
 
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,eclipse,netbeans,java,maven,intellij,visualstudiocode,openframeworks+visualstudio
