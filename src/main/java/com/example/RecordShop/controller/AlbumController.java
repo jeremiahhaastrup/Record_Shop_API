@@ -5,7 +5,6 @@ import com.example.RecordShop.exception.NoSuchAlbumReleaseYearException;
 import com.example.RecordShop.exception.NoSuchAlbumTitleException;
 import com.example.RecordShop.exception.NoSuchArtistException;
 import com.example.RecordShop.model.Album;
-import com.example.RecordShop.model.Artist;
 import com.example.RecordShop.service.AlbumService;
 import com.example.RecordShop.service.CloudinaryService;
 import com.example.RecordShop.type.Genre;
