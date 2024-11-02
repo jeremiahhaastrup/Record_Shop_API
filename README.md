@@ -20,6 +20,7 @@ The Record Shop API is a RESTful web service built using Spring Boot, PostgreSQL
 - **PostgreSQL**: Cloud-hosted relational database.
 - **AWS Elastic Beanstalk**: Platform-as-a-Service (PaaS) for deployment.
 - **Docker**: Containerisation for consistent development and deployment environments.
+- **Cloudinary**: Image storage and management service.
 - **JUnit**: Testing framework used for unit testing.
 - **Git**: Version control system.
 
@@ -28,13 +29,13 @@ The Record Shop API is a RESTful web service built using Spring Boot, PostgreSQL
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/jeremiahhaastrup/Record_Shop.git
+   git clone https://github.com/jeremiahhaastrup/Record_Shop_API.git
    ```
 
 2. **Navigate to the project directory**:
 
    ```bash
-   cd Record_Shop
+   cd Record_Shop_API
    ```
 
 3. **Build the project**:
@@ -62,7 +63,7 @@ The Record Shop API is a RESTful web service built using Spring Boot, PostgreSQL
       Run the following command to build the Docker image from the `Dockerfile` in the project directory:
 
       ```bash
-      docker build -t record_shop_api .
+      docker build -t record_shop_api:<VERSION> .
       ```
 
    3. **Run the Docker Container**:
@@ -70,7 +71,7 @@ The Record Shop API is a RESTful web service built using Spring Boot, PostgreSQL
       Once the image is successfully built, run the container using the following command. The `-p` flag maps the container's port 8080 to your local machine's port 8080:
 
       ```bash
-      docker run -p 8080:8080 record_shop_api
+      docker run -p 8080:8080 record_shop_api:<VERSION>
       ```
 
       After running this command, the API will be accessible at `http://localhost:8080`.
