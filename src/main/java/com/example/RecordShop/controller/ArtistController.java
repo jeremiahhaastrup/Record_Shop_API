@@ -49,6 +49,9 @@ public class ArtistController {
         if (file != null && !file.isEmpty()) {
             String imageUrl = cloudinaryService.uploadImage(file);
             newArtist.setImageUrl(imageUrl);
+        } else {
+            Artist existingArtist = artistService.getArtistById(id);
+            newArtist.setImageUrl(existingArtist.getImageUrl());
         }
         return new ResponseEntity<>(artistService.updateArtist(newArtist, id), HttpStatus.CREATED);
     }
