@@ -97,6 +97,9 @@ public class AlbumController {
         if (file != null && !file.isEmpty()) {
             String imageUrl = cloudinaryService.uploadImage(file);
             newAlbum.setImageUrl(imageUrl);
+        } else {
+            Album existingAlbum = albumService.getAlbumById(id);
+            newAlbum.setImageUrl(existingAlbum.getImageUrl());
         }
         return new ResponseEntity<>(albumService.updateAlbum(newAlbum, id), HttpStatus.CREATED);
     }
